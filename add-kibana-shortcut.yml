@@ -1,0 +1,27 @@
+---
+- name: Create Kibana Shortcut
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  connection: local
+
+  tasks:
+
+  - name: Create desktop shortcut image
+    copy:
+      src: images/
+      dest: /usr/share/icons/
+
+  - name: Create Fleet desktop shortcut
+    copy:
+      dest: /home/guerillabt/Desktop/Kibana.desktop
+      content: |
+        [Desktop Entry]
+        Encoding=UTF-8
+        Name=Kibana
+        Type=Link
+        URL=http://127.0.0.1:5601
+        Icon=/usr/share/icons/kibana.png
+        Name[en_US]=Kibana
