@@ -5,7 +5,6 @@
   gather_facts: no
   become: yes
   become_method: sudo
-  connection: local
 
   tasks:
 
@@ -13,5 +12,4 @@
     docker_compose:
       project_src: /opt/elk-siem/elastalert
       build: yes
-      recreate: always
       state: present
