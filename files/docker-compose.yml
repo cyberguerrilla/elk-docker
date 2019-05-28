@@ -1,17 +1,16 @@
 version: '2.2'
-
 services:
-
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
     container_name: es01
     environment:
       - node.name=es01
-      - cluster.initial_master_nodes=es01
       - cluster.name=docker-cluster
+      - discovery.zen.minimum_master_nodes=1
+      - discovery.type=single-node
       - xpack.monitoring.collection.enabled=true
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     ulimits:
       memlock:
         soft: -1
@@ -19,17 +18,18 @@ services:
     restart: always
     volumes:
       - esdata01:/usr/share/elasticsearch/data
+      - ./elasticsearch/scripts:/usr/share/elasticsearch/scripts
+    entrypoint: /usr/share/elasticsearch/scripts/es-entrypoint.sh
     ports:
       - 9200:9200
     networks:
       - elk
-
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.0.0
+    image: docker.elastic.co/kibana/kibana:6.7.2
     container_name: kibana
     hostname: kibana
-    volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+#   volumes:
+#     - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
       - ELASTICSEARCH_HOSTS=http://es01:9200
       - XPACK_MONITORING_ENABLED=true
@@ -38,20 +38,21 @@ services:
       - 5601:5601
     networks:
       - elk
-
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.0.0
+    image: docker.elastic.co/logstash/logstash:6.7.2
     container_name: logstash
     hostname: logstash
     volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash/config:/usr/share/logstash/config
       - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/mordor-logs:/usr/share/logstash/mordor-logs
+      - ./logstash/scripts:/usr/share/logstash/scripts
     ports:
       - "5000-5100:5000-5100"
     restart: always
     depends_on:
-      - kibana
+      - es01
+    entrypoint: /usr/share/logstash/scripts/ls-entrypoint.sh
     networks:
       elk:
 
@@ -61,3 +62,4 @@ volumes:
 
 networks:
   elk:
+    name: elk
