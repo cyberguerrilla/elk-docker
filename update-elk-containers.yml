@@ -18,6 +18,7 @@
     copy:
       src: files/
       dest: /opt/elk-siem
+      mode: preserve     
 
   - name: docker-compose up
     docker_compose:
