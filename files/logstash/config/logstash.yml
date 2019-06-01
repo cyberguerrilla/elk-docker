@@ -212,7 +212,8 @@ config.reload.interval: 60s
 #
 # Where to find custom plugins
 # path.plugins: []
-
+config.reload.automatic: true
+config.reload.interval: 5s
 log.level: info
 http.host: "0.0.0.0"
 xpack.monitoring.elasticsearch.hosts: http://es01:9200
