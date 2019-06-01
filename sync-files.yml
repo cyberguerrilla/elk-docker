@@ -13,3 +13,4 @@
       dest: /opt/elk-siem
       delete: yes
       recursive: yes
+    delegate_to: localhost
