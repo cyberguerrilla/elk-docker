@@ -1,0 +1,15 @@
+---
+- name: Sync files
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Synchronization of src on the control machine to dest on the remote hosts
+    synchronize:
+      src: files/
+      dest: /opt/elk-siem
+      delete: yes
+      recursive: yes
