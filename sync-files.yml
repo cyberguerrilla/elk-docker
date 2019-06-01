@@ -1,5 +1,5 @@
 ---
-- name: Sync files
+- name: Update ELK Containers
   hosts: 127.0.0.1
   connection: local
   gather_facts: no
@@ -7,10 +7,9 @@
   become_method: sudo
 
   tasks:
-  - name: Synchronization of src on the control machine to dest on the remote hosts
-    synchronize:
+
+  - name: Copy files to /opt/elk-siem
+    copy:
       src: files/
       dest: /opt/elk-siem
-      delete: yes
-      recursive: yes
-    delegate_to: localhost
+      mode: preserve     
