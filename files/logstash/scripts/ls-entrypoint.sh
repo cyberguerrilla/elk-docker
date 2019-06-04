@@ -6,4 +6,6 @@ while [[ $(curl -s http://es01:9200/_template/shards | grep -c number_of_shards)
   sleep 1
 done
 
+bin/logstash-plugin install logstash-filter-prune
+
 /usr/local/bin/docker-entrypoint
