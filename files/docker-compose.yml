@@ -50,8 +50,6 @@ services:
     ports:
       - "5000-5100:5000-5100"
     restart: always
-    depends_on:
-      - es01
     entrypoint: /usr/share/logstash/scripts/ls-entrypoint.sh
     networks:
       elk:

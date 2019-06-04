@@ -1,0 +1,15 @@
+---
+- name: Update ELK Containers
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+  - name: Copy files to /opt/elk-siem
+    copy:
+      src: files/
+      dest: /opt/elk-siem
+      mode: preserve     
