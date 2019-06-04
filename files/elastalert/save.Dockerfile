@@ -7,18 +7,11 @@
 # https://github.com/Yelp/elastalert/blob/master/Dockerfile-test
 # https://jordanpotti.com/2017/12/22/using-elastalert-to-help-automate-threat-hunting/
 
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:latest
 ENV DEBIAN_FRONTEND noninteractive
 
-LABEL maintainer="Roberto Rodriguez @Cyb3rWard0g"
-LABEL description="Dockerfile base for the HELK Elastalert."
-
-ENV ESALERT_GID=910
-ENV ESALERT_UID=910
-ENV ESALERT_USER=elastalertuser
-ENV ESALERT_HOME=/etc/elastalert
-ENV ESALERT_SIGMA_HOME=/opt/sigma
-
+# *********** Installing Prerequisites ***************
+# -qq : No output except for errors
 RUN apt-get update && apt-get install -qqy --no-install-recommends \
   wget \
   sudo \
@@ -27,34 +20,43 @@ RUN apt-get update && apt-get install -qqy --no-install-recommends \
   autoremove \
   && rm -rf /var/lib/apt/lists/*
 
+ENV ESALERT_GID=910
+ENV ESALERT_UID=910
+ENV ESALERT_USER=elastalertuser
+ENV ESALERT_HOME=/etc/elastalert
+ENV ESALERT_SIGMA_HOME=/opt/sigma
+
 # *********** Installing Prerequisites ***************
 # -qq : No output except for errors
-RUN apt-get update -qq && apt-get install -qqy --no-install-recommends \
+RUN apt-get update && apt-get install -qqy --no-install-recommends \
   libmagic-dev \
   build-essential \
   python-setuptools \
   python2.7 \
   python2.7-dev \
   python-pip \
+  libssl-dev \
   git \
+  tox \
+  jq \
   python3-pip \
   python3-dev \
   python3-setuptools \
-  tzdata \
+  # ********* Download Elastalert & Install **************
+  && git clone https://github.com/Yelp/elastalert.git ${ESALERT_HOME} \
+  && bash -c 'mkdir -pv /etc/elastalert/rules' \
+  && cd ${ESALERT_HOME} \
+  && sudo pip install --upgrade pip \
+  && echo "urllib3<1.25,>=1.20" >> requirements.txt \
+  && pip install -r requirements.txt \
+  && python setup.py install \
   # ********* Clean ****************************
   && apt-get -qy clean \
   autoremove \
   && rm -rf /var/lib/apt/lists/* \
-  # ********* Install Elastalert **************
-  && git clone https://github.com/Yelp/elastalert.git ${ESALERT_HOME} \
-  && bash -c 'mkdir -pv /etc/elastalert/rules' \
-  && cd ${ESALERT_HOME} \
-  && python -m pip install --upgrade pip \
-  && pip install urllib3==1.24.3 \
-  && pip install -r requirements.txt \
-  && python setup.py install \
   # ********* Download SIGMA *******************
   && git clone https://github.com/Cyb3rWard0g/sigma.git ${ESALERT_SIGMA_HOME} \
+  && bash -c 'mkdir -pv /opt/sigma/scripts' \
   && sudo pip3 install --upgrade pip \
   && pip3 install -r ${ESALERT_SIGMA_HOME}/tools/requirements.txt
 
