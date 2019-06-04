@@ -14,9 +14,9 @@
       src: images/
       dest: /usr/share/icons/
 
-  - name: Create Fleet desktop shortcut
+  - name: Create Kibana desktop shortcut
     copy:
-      dest: /home/guerillabt/Desktop/Kibana.desktop
+      dest: /home/analyst/Desktop/Kibana.desktop
       content: |
         [Desktop Entry]
         Encoding=UTF-8
