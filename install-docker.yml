@@ -37,6 +37,12 @@
       state: started
       enabled: true
 
+  - name: Add analyst user to docker group
+    user:
+      name: analyst
+      groups: docker
+      append: true
+
   - name: Ensure EPEL is enabled 
     yum: 
       name: epel-release 
