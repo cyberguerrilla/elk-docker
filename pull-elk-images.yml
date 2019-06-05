@@ -5,21 +5,20 @@
   gather_facts: no
   become: yes
   become_method: sudo
-  connection: local
 
   tasks:
 
   - name: Elasticsearch docker image
     docker_image:
-      name: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+      name: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
       source: pull
 
   - name: Kibana docker image
     docker_image:
-      name: docker.elastic.co/kibana/kibana:7.0.0
+      name: docker.elastic.co/kibana/kibana:6.7.2
       source: pull
 
   - name: Logstash docker image
     docker_image:
-      name: docker.elastic.co/logstash/logstash:7.0.0
+      name: docker.elastic.co/logstash/logstash:6.7.2
       source: pull
