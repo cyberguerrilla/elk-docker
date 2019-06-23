@@ -24,6 +24,7 @@ services:
       - 9200:9200
     networks:
       - elk
+
   kibana:
     image: docker.elastic.co/kibana/kibana:6.7.2
     container_name: kibana
@@ -36,6 +37,7 @@ services:
       - 5601:5601
     networks:
       - elk
+
   logstash:
     image: docker.elastic.co/logstash/logstash:6.7.2
     container_name: logstash
@@ -52,7 +54,25 @@ services:
     restart: always
     entrypoint: /usr/share/logstash/scripts/ls-entrypoint.sh
     networks:
-      elk:
+      - elk
+
+  elastalert:
+    build: ./elastalert/
+    image: elastalert:latest
+    container_name: elastalert
+    restart: always
+    environment:
+      ES_HOST: es01
+      ES_PORT: 9200
+    networks:
+      - elk
+  
+  domain_stats:
+    image: hasecuritysolutions/domain_stats
+    container_name: domain_stats
+    restart: always
+    networks:
+      - elk
 
 volumes:
   esdata01:

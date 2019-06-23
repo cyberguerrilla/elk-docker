@@ -22,5 +22,6 @@
   - name: docker-compose up
     docker_compose:
       project_src: /opt/elk-siem
+      build: yes
       recreate: always
       state: present
