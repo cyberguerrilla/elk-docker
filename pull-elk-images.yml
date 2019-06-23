@@ -22,3 +22,13 @@
     docker_image:
       name: docker.elastic.co/logstash/logstash:6.7.2
       source: pull
+
+  - name: Elastalert docker image
+    docker_image:
+      name: phusion/baseimage:0.11
+      source: pull
+
+  - name: Domain_stats docker image
+    docker_image:
+      name: hasecuritysolutions/domain_stats
+      source: pull
