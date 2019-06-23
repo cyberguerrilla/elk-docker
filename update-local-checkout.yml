@@ -8,7 +8,6 @@
 
   tasks:
 
-  - name: git pull updates
-    git:
-      repo: https://github.com/cyberguerrilla/elk-docker.git
-      dest: /opt/playbooks
+  - command: git pull
+    args:
+      chdir: /opt/playbooks/elk-docker
