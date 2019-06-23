@@ -25,8 +25,11 @@
 
   - name: Elastalert docker image
     docker_image:
-      name: phusion/baseimage:0.11
-      source: pull
+      name: elastalert:latest
+      build:
+        path: /opt/elk-siem/elastalert/
+        pull: yes
+      source: build
 
   - name: Domain_stats docker image
     docker_image:

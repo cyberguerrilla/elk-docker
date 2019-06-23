@@ -8,8 +8,13 @@
 
   tasks:
 
+  - name: Delete old files
+    file:
+      state: absent
+      path: /opt/elk-siem
+
   - name: Copy files to /opt/elk-siem
     copy:
       src: files/
       dest: /opt/elk-siem
-      mode: preserve     
+      mode: preserve
