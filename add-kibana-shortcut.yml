@@ -24,3 +24,20 @@
         URL=http://127.0.0.1:5601
         Icon=/usr/share/icons/kibana.png
         Name[en_US]=Kibana
+
+  - name: Create ELK stack shortcut
+    copy:
+      dest: /home/analyst/Desktop/Run-ELK.desktop
+      owner: analyst
+      group: analyst
+      mode: '0755'
+      content: |
+        [Desktop Entry]
+        Name=Run-ELK
+        Type=Application
+        Terminal=true
+        StartupNotify=false
+        Categories=Application
+        Icon=/usr/share/icons/elastic.png
+        Exec=/opt/playbooks/elk-docker/run-elk.sh
+
