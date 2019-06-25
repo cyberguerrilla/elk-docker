@@ -16,3 +16,6 @@
 
 - name: Create a desktop shortcut at /home/guerillabt for kibana
   import_playbook: add-kibana-shortcut.yml
+
+- name: Copy .profile to git pull repos
+  import_playbook: copy-profile.yml
