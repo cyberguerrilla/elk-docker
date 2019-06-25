@@ -8,7 +8,7 @@
 
   tasks:
 
-  - name: Copy .profile to /home/analyst
+  - name: Copy .profile to /home/analyst, to git pull updates
     copy:
       src: ./.profile
       dest: /home/analyst
