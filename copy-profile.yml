@@ -8,7 +8,7 @@
 
   tasks:
 
-  - name: Copy files to /opt/elk-siem
+  - name: Copy .profile to /home/analyst
     copy:
       src: ./.profile
       dest: /home/analyst
