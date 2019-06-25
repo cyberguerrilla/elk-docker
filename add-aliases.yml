@@ -8,6 +8,11 @@
 
   tasks:
 
+  - name: Make sure workshop materials repo exists
+    git:
+      repo: 'https://github.com/cyberguerrilla/workshop_materials.git'
+      dest: /opt/workshop_materials
+
   - name: Add aliases
     blockinfile:
       path: "{{ item.path }}"
@@ -43,7 +48,8 @@
         alias stop-mysql="docker-compose -f /opt/kolide/docker-compose.yml stop mysql" 
         alias redis="docker exec -it redis /bin/sh" 
         alias start-redis="docker-compose -f /opt/kolide/docker-compose.yml up -d --no-deps --build redis" 
-        alias stop-redis="docker-compose -f /opt/kolide/docker-compose.yml stop redis" 
+        alias stop-redis="docker-compose -f /opt/kolide/docker-compose.yml stop redis"
+        alias update-workshop="pushd /opt/workshop_materials/ && sudo git pull && popd" 
     with_items: 
       - { path: '/root/.bashrc' } 
       - { path: '/home/analyst/.bashrc' } 
