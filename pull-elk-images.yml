@@ -10,28 +10,28 @@
 
   - name: Elasticsearch docker image
     docker_image:
-      name: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+      name: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
       source: pull
 
   - name: Kibana docker image
     docker_image:
-      name: docker.elastic.co/kibana/kibana:6.7.2
+      name: docker.elastic.co/kibana/kibana:7.13.0
       source: pull
 
   - name: Logstash docker image
     docker_image:
-      name: docker.elastic.co/logstash/logstash:6.7.2
+      name: docker.elastic.co/logstash/logstash:7.13.0
       source: pull
 
-  - name: Elastalert docker image
-    docker_image:
-      name: elastalert:latest
-      build:
-        path: /opt/elk-siem/elastalert/
-        pull: yes
-      source: build
+#  - name: Elastalert docker image
+#    docker_image:
+#      name: elastalert:latest
+#      build:
+#        path: /opt/elk-siem/elastalert/
+#        pull: yes
+#      source: build
 
-  - name: Domain_stats docker image
-    docker_image:
-      name: hasecuritysolutions/domain_stats
-      source: pull
+#  - name: Domain_stats docker image
+#    docker_image:
+#      name: hasecuritysolutions/domain_stats
+#      source: pull

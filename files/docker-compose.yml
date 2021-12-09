@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
     container_name: es01
     environment:
       - node.name=es01
@@ -10,7 +10,7 @@ services:
       - discovery.type=single-node
       - xpack.monitoring.collection.enabled=true
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
     ulimits:
       memlock:
         soft: -1
@@ -18,15 +18,15 @@ services:
     restart: always
     volumes:
       - esdata01:/usr/share/elasticsearch/data
-      - ./elasticsearch/scripts:/usr/share/elasticsearch/scripts
-    entrypoint: /usr/share/elasticsearch/scripts/es-entrypoint.sh
+      # - ./elasticsearch/scripts:/usr/share/elasticsearch/scripts
+    # entrypoint: /usr/share/elasticsearch/scripts/es-entrypoint.sh
     ports:
       - 9200:9200
     networks:
       - elk
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.7.2
+    image: docker.elastic.co/kibana/kibana:7.13.0
     container_name: kibana
     hostname: kibana
     environment:
@@ -39,39 +39,39 @@ services:
       - elk
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:6.7.2
+    image: docker.elastic.co/logstash/logstash:7.13.0
     container_name: logstash
     hostname: logstash
     environment:
-      - "LS_JAVA_OPTS=-Xmx512m -Xms512m"
+      - "LS_JAVA_OPTS=-Xmx1g -Xms1g"
     volumes:
       - ./logstash/config:/usr/share/logstash/config
       - ./logstash/pipeline:/usr/share/logstash/pipeline
-      - ./logstash/mordor-logs:/usr/share/logstash/mordor-logs
-      - ./logstash/scripts:/usr/share/logstash/scripts
+      # - ./logstash/mordor-logs:/usr/share/logstash/mordor-logs
+      # - ./logstash/scripts:/usr/share/logstash/scripts
     ports:
       - "5000-5100:5000-5100"
     restart: always
-    entrypoint: /usr/share/logstash/scripts/ls-entrypoint.sh
+    # entrypoint: /usr/share/logstash/scripts/ls-entrypoint.sh
     networks:
       - elk
 
-  elastalert:
-    image: elastalert:latest
-    container_name: elastalert
-    restart: always
-    environment:
-      ES_HOST: es01
-      ES_PORT: 9200
-    networks:
-      - elk
+  #elastalert:
+    #image: elastalert:latest
+    #container_name: elastalert
+    #restart: always
+    #environment:
+      #ES_HOST: es01
+      #ES_PORT: 9200
+    #networks:
+      #- elk
   
-  domain_stats:
-    image: hasecuritysolutions/domain_stats
-    container_name: domain_stats
-    restart: always
-    networks:
-      - elk
+  #domain_stats:
+    #image: hasecuritysolutions/domain_stats
+    #container_name: domain_stats
+    #restart: always
+    #networks:
+      #- elk
 
 volumes:
   esdata01:
